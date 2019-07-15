@@ -513,8 +513,12 @@ var ReactTable = function (_Methods) {
               var resolvedCell = _.normalizeComponent(column.Cell, cellInfo, value);
 
               // Resolve Renderers
+              var DefaultExpanderComponent = function(props) {
+                return React.createElement('span', { style: { paddingLeft: '25px', cursor: 'default' }}, ' ')
+              };
+
               var ResolvedAggregatedComponent = column.Aggregated || (!column.aggregate ? AggregatedComponent : column.Cell);
-              var ResolvedExpanderComponent = column.Expander || ExpanderComponent;
+              var ResolvedExpanderComponent = cellInfo.subRows && cellInfo.subRows.length < 2 ? DefaultExpanderComponent : (column.Expander || ExpanderComponent);
               var ResolvedPivotValueComponent = column.PivotValue || PivotValueComponent;
               var DefaultResolvedPivotComponent = PivotComponent || function (props) {
                 return React.createElement(
